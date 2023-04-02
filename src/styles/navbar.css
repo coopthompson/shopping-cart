@@ -1,0 +1,8 @@
+.navbar, .choices {
+    display: flex;
+    justify-content: space-between;
+}
+
+.choices {
+    gap: 100px;
+}
