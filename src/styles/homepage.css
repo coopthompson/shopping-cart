@@ -30,3 +30,12 @@
     position: absolute;
     top: 175px;
 }
+
+.slides--indicator {
+    position: absolute;
+    display: flex;
+    height: 50px;
+    gap: 10px;
+    right: 43%;
+    bottom: 30px;
+}
