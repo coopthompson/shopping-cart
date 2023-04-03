@@ -1,3 +1,7 @@
+:root {
+    background-color: #FEFFF1;
+}
+
 .marquis {
     display: flex;
     flex-direction: column;

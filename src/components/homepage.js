@@ -4,8 +4,7 @@ import {ReactComponent as Right} from "../images/right.svg"
 
 const Homepage = (props) => {
 
-
-  const { slideShow, upCount, downCount, handleMouseEnter, handleMouseLeave } = props
+  const { slideShow, upCount, downCount, handleMouseEnter, handleMouseLeave, clickIndex } = props
   const { count, images, isHover } = slideShow
 
   const arrowStyle = { 
@@ -13,28 +12,22 @@ const Homepage = (props) => {
     height:"200px", 
     fill: isHover ? "#FEFFF1" : "darkgreen"
   }
-
-  const slidesStyle = {
-    width: "50px",
-    height: "50px",
-    borderRadius: "50%",
-    backgroundColor: "#FEFFF1",
-    opacity: "0.6",
-    border: "5px darkgreen"
-  }
-
-  const selectedStyle = {
-    width: "50px",
-    height: "50px",
-    borderRadius: "50%",
-    backgroundColor: "darkgreen",
-    opacity: "0.6",
-    border: "5px darkgreen"
-  }
-
+  
   const slidesArray = images.map(slide => {
-     return <div className="slide" id={slide.id} key={slide.id} style={slide.id === count ? selectedStyle : slidesStyle}></div>
-  })
+    return <div 
+      className="slide" 
+      id={slide.id} 
+      key={slide.id} 
+      style={{
+        width: "50px",
+        height: "50px",
+        borderRadius: "50%",
+        backgroundColor: slide.id === count ? "#FEFFF1" : "darkgreen",
+        opacity: "0.6",
+      }} 
+      onClick={clickIndex}>
+    </div>
+ })
 
   return (
     <div>
@@ -43,8 +36,20 @@ const Homepage = (props) => {
         <div className="display--box">
           <img className="display--actual" src={images[count].src} alt={images[count].alt}/>
           <div className="arrows">
-            <Left onClick={downCount} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="left" alt="Left Arrow" style={arrowStyle}/>
-            <Right onClick={upCount} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="right" alt="Right Arrow" style={arrowStyle}/>
+            <Left 
+              onClick={downCount} 
+              onMouseEnter={handleMouseEnter} 
+              onMouseLeave={handleMouseLeave} 
+              className="left" alt="Left Arrow" 
+              style={arrowStyle}
+            />
+            <Right 
+              onClick={upCount} 
+              onMouseEnter={handleMouseEnter} 
+              onMouseLeave={handleMouseLeave} 
+              className="right" alt="Right Arrow" 
+              style={arrowStyle}
+            />
           </div>
           <div className="slides--indicator">{slidesArray}</div>
         </div>

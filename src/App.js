@@ -8,7 +8,7 @@ import mom from "./images/mom.jpg"
 function App() {
 
   const [slideShow, setSlideShow] = useState({ isHover: false, count: 0, images:[
-    { src:scarviomarq, alt:"Scarlet and Violet Pokemon TCG", id:0},{ src:photonmarq, alt:"Yugioh Photon Hypernova", id:1},{ src:mom, alt:"MTG March of the Machines", id:2 }
+    { src:scarviomarq, alt:"Scarlet and Violet Pokemon TCG", id:0 },{ src:photonmarq, alt:"Yugioh Photon Hypernova", id:1 },{ src:mom, alt:"MTG March of the Machines", id:2 }
   ]})
 
   const upCount = () => {
@@ -65,10 +65,27 @@ function App() {
     })
   }
 
+  const clickIndex = (e) => {
+    const { id } = e.target
+    setSlideShow (prevShow => {
+      return {
+        ...prevShow,
+        count: parseInt(id)
+      }
+    })
+  }
+
   return (
     <div>
       <Navbar />
-      <Homepage slideShow={slideShow} upCount={upCount} downCount={downCount} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave}/>
+      <Homepage 
+        slideShow={slideShow} 
+        upCount={upCount} 
+        downCount={downCount} 
+        handleMouseEnter={handleMouseEnter} 
+        handleMouseLeave={handleMouseLeave}
+        clickIndex={clickIndex}
+      />
     </div>
   );
 }
