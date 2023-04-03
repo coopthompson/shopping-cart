@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 import CartImage from "../images/cart.svg"
 
 const Navbar = () => {
-    let filled = true;
+    let filled = false;
     let count = 1;
     return (
         <div className="navbar">
