@@ -1,8 +1,14 @@
 import "../styles/homepage.css"
 
-const Homepage = () => {
+const Homepage = (props) => {
+    console.log(props)
     return (
-        <h1>This is the homepage</h1>
+      <div>
+        <div className="marquis">
+          <h1 className="marquis--title">New to the Store</h1>
+          <div className="display--box"></div>
+        </div>
+      </div>
     )
 }
 
