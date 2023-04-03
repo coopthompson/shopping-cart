@@ -1,8 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a, h2 {
+    text-decoration: none;
+    font-weight: bold;
+    color:#FEFFF1;
+}
+
+a:visited {
+    color: #FEFFF1;
+}
+
 .navbar, .choices {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.cart--part{
+    padding-top:5px;
+    padding-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    position: relative;
+}
+
+.navbar {
+    padding: 20px;
+    background-color: black;
 }
 
 .choices {
     gap: 100px;
+}
+
+.amount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: yellow;
+    color: black;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    right: 0px;
+    top: 1px;
 }
