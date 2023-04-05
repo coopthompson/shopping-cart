@@ -15,8 +15,6 @@ function App (props) {
           isHover 
         } = props
 
-  console.log(images[count])
-
   const arrowStyle = { 
     width: "200px",
     height:"200px", 

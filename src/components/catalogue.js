@@ -2,9 +2,8 @@ import "../styles/catalogue.css"
 
 const Catalogue = (props) => {
    const { itemList, putInCart } = props
-   const { items } = itemList
 
-    const itemsDisplay = items.map((item) => {
+    const itemsDisplay = itemList.map((item) => {
         return <div className="card" key={item.id} id={item.id}>
             <p>{item.name}</p>
             <img className="card--image" src={item.src} alt={item.name}/>

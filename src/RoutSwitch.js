@@ -99,7 +99,14 @@ const RouteSwitch = () => {
   )
   
 
-  const { items, totalItemsCart, totalPrice, images, isHover, count  } = shopData
+  const { 
+          items, 
+          totalItemsCart, 
+          totalPrice, 
+          images, 
+          isHover, 
+          count  
+        } = shopData
 
   const upCount = () => {
     if (count === images.length -1) {
@@ -165,6 +172,57 @@ const RouteSwitch = () => {
     })
   }
 
+  const getSiblings = (e) => {
+    let siblings = [];
+    if(!e.parentNode) {
+        return siblings;
+    }
+
+    let sibling  = e.parentNode.firstChild;
+
+    while (sibling) {
+        if (sibling.nodeType === 1 && sibling !== e) {
+            siblings.push(sibling);
+        }
+        sibling = sibling.nextSibling;
+    }
+    return siblings;
+  }; 
+
+  const putInCart = (e) => {
+
+    const parentId = e.target.parentNode.id
+    const siblings = getSiblings(e.target)
+    const uneditedPrice = siblings[2].textContent
+    const priceArray = uneditedPrice.match(/\d+/g)
+    const itemPrice = parseFloat(priceArray.join("."))
+    const quantity = parseInt(siblings[3].value)
+    const placeValue = siblings[3].placeholder
+    const ogItem = items[parentId]
+
+    if (quantity > 0) {
+      const newItem = {...ogItem, quantity: quantity}
+      setShopData((prevItemList) => {
+        return {
+          ...prevItemList,
+          inCart:[...prevItemList.inCart, newItem],
+          totalPrice: prevItemList.totalPrice + (quantity * itemPrice),
+          totalItemsCart: prevItemList.totalItemsCart + quantity
+        }
+      })
+    } else if (parseInt(placeValue) === 1) {
+      const newItem = {...ogItem, quantity: 1 }
+      setShopData((prevItemList) => {
+        return {
+          ...prevItemList,
+          inCart:[...prevItemList.inCart, newItem],
+          totalPrice: prevItemList.totalPrice + itemPrice,
+          totalItemsCart: prevItemList.totalItemsCart + 1
+        }
+      })
+    }
+  }
+
 
   return (
     <BrowserRouter>
@@ -188,9 +246,10 @@ const RouteSwitch = () => {
           <>
             <Navbar />
             <Shopping
-              itemList={items}
+              items={items}
               totalItemsCart={totalItemsCart}
               totalPrice={totalPrice}
+              putInCart={putInCart}
             />
           </>
         }/>
