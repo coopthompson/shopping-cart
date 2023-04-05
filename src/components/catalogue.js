@@ -1,6 +1,24 @@
+import "../styles/catalogue.css"
+
 const Catalogue = (props) => {
+   const { itemList, putInCart } = props
+   const { items } = itemList
+
+    const itemsDisplay = items.map((item) => {
+        return <div className="card" key={item.id} id={item.id}>
+            <p>{item.name}</p>
+            <img className="card--image" src={item.src} alt={item.name}/>
+            <p>Price: ${item.price}</p>
+            <input className="quantity--input" type="number" name="quantity" placeholder={1}/>
+            <button className="add" onClick={putInCart}>Add to Cart</button>
+        </div>
+    })
+
+
     return (
-        <h1>Inside the catalogue</h1>
+        <div className="card--grid">
+          {itemsDisplay}
+        </div>
     )
 }
 

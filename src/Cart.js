@@ -1,6 +1,4 @@
-import React,{ useState } from "react"
 import Navbar from "./components/navbar"
-
 
 const Cart = () => {
     return (
@@ -12,3 +10,4 @@ const Cart = () => {
 }
 
 export default Cart
+

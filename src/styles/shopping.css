@@ -1,0 +1,14 @@
+.button--container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.cart--button {
+    background-color: #fad000;
+    border-radius: 5px;
+    font-size: 25px;
+    width: 250px;
+    height: 40px;
+}
