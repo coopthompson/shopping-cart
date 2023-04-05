@@ -21,7 +21,9 @@ import Lotus from "./images/lotus.jpg";
 const RouteSwitch = () => {
 
   const [shopData, setShopData] = useState(
-      { isHover: false, 
+    { 
+      isHover: false, 
+      filled: false,
       count:0, 
       images:[
         {
@@ -101,10 +103,12 @@ const RouteSwitch = () => {
 
   const { 
           items, 
+          inCart,
           totalItemsCart, 
           totalPrice, 
           images, 
           isHover, 
+          filled,
           count  
         } = shopData
 
@@ -196,32 +200,74 @@ const RouteSwitch = () => {
     const uneditedPrice = siblings[2].textContent
     const priceArray = uneditedPrice.match(/\d+/g)
     const itemPrice = parseFloat(priceArray.join("."))
-    const quantity = parseInt(siblings[3].value)
-    const placeValue = siblings[3].placeholder
+    const input = siblings[3].value
+    const quantity = parseInt(input)
     const ogItem = items[parentId]
 
-    if (quantity > 0) {
-      const newItem = {...ogItem, quantity: quantity}
-      setShopData((prevItemList) => {
+    const hasGrocery = inCart.some((item) => {
+      return item.id === ogItem.id ;
+    })
+
+    let newInCart = inCart.map((item) => {
+      if (item.id === ogItem.id) {
+          return {
+              ...item,
+              quantity: item.quantity += (input === "" ? 1 : quantity),
+          };
+      }
+      return item
+    }); 
+
+    if (!hasGrocery) {
+      const newItem = {...ogItem, quantity: (input === "" ? 1 : quantity)}
+      setShopData((prevShopData) => {
         return {
-          ...prevItemList,
-          inCart:[...prevItemList.inCart, newItem],
-          totalPrice: prevItemList.totalPrice + (quantity * itemPrice),
-          totalItemsCart: prevItemList.totalItemsCart + quantity
+          ...prevShopData,
+          inCart:[...prevShopData.inCart, newItem],
+          totalPrice: prevShopData.totalPrice + (input === "" ? itemPrice : (quantity * itemPrice)),
+          totalItemsCart: prevShopData.totalItemsCart + (input === "" ? 1 : quantity)
         }
       })
-    } else if (parseInt(placeValue) === 1) {
-      const newItem = {...ogItem, quantity: 1 }
-      setShopData((prevItemList) => {
+    } else {
+      setShopData((prevShopData) => {
         return {
-          ...prevItemList,
-          inCart:[...prevItemList.inCart, newItem],
-          totalPrice: prevItemList.totalPrice + itemPrice,
-          totalItemsCart: prevItemList.totalItemsCart + 1
+          ...prevShopData,
+          inCart:newInCart,
+          totalPrice: prevShopData.totalPrice + (input === "" ? itemPrice : (quantity * itemPrice)),
+          totalItemsCart: prevShopData.totalItemsCart + (input === "" ? 1 : quantity)
         }
       })
+      
     }
   }
+
+  const checkCart = () => {
+    if (totalItemsCart > 0) {
+      setShopData(prevShopData => {
+        return {
+          ...prevShopData,
+          filled: true
+        }
+      })
+      return;
+    } else {
+      setShopData(prevShopData => {
+        return {
+          ...prevShopData,
+          filled: true
+        }
+      })
+      return;
+    }
+  }
+
+
+  const removeItem = () => {
+    console.log('test')
+  }
+
+  console.log(inCart)
+  console.log(totalPrice)
 
 
   return (
@@ -229,7 +275,11 @@ const RouteSwitch = () => {
       <Routes>
         <Route path="/" element={
           <>
-            <Navbar />
+            <Navbar
+              totalItemsCart={totalItemsCart}
+              filled={filled}
+              checkCart={checkCart}
+            />
             <App 
               images={images}
               count={count}
@@ -244,19 +294,33 @@ const RouteSwitch = () => {
         }/>
         <Route path="/shop" element={
           <>
-            <Navbar />
+            <Navbar
+              totalItemsCart={totalItemsCart}
+              filled={filled}
+              checkCart={checkCart}
+            />
             <Shopping
               items={items}
               totalItemsCart={totalItemsCart}
               totalPrice={totalPrice}
               putInCart={putInCart}
+              checkCart={checkCart}
             />
           </>
         }/>
         <Route path="/cart" element={
           <>
-            <Navbar />
-            <Cart />
+            <Navbar
+              totalItemsCart={totalItemsCart} 
+              filled={filled}
+              checkCart={checkCart}
+            />
+            <Cart
+              inCart={inCart}
+              totalItemsCart={totalItemsCart}
+              totalPrice={totalPrice}
+              removeItem={removeItem}
+            />
           </>
         }/>
       </Routes>

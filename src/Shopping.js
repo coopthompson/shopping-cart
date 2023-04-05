@@ -5,10 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 const Shopping = (props) => {
 
-  const { items, totalPrice, totalItemsCart, putInCart} = props
-
-  console.log(totalPrice)
-  console.log(totalItemsCart)
+  const { 
+          items, 
+          totalPrice, 
+          totalItemsCart, 
+          putInCart,
+          checkCart
+        } = props
 
   let navigate = useNavigate();
   const routeChange = () =>{ 
@@ -29,6 +32,7 @@ const Shopping = (props) => {
         totalItemsCart={totalItemsCart}
         totalPrice={totalPrice}
         putInCart={putInCart}
+        checkCart={checkCart}
       />
     </div>
   );

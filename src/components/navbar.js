@@ -2,8 +2,9 @@ import "../styles/navbar.css"
 import { Link } from "react-router-dom"
 import CartImage from "../images/cart.svg"
 
-const Navbar = () => {
-    let filled = false;
+const Navbar = (props) => {
+
+    const { totalItemsCart, filled } = props
 
     return (
         <div className="navbar">
@@ -14,7 +15,7 @@ const Navbar = () => {
                 <div className="cart--part">
                     <Link to="/cart">Cart</Link>
                     <img src={CartImage} alt="Shopping cart" style={{ width:"30px", height:"30px"}}/>
-                    {filled && <div className="amount">{"test"}</div>}
+                    {filled && <div className="amount">{totalItemsCart <= 99 ? totalItemsCart: "99+"}</div>}
                 </div>
             </div>
         </div>

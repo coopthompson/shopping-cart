@@ -1,0 +1,18 @@
+.cart--container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.cart {
+    width: 500px;
+    height: 90vh;
+    background-color: white;
+    border: 5px solid darkgreen;
+}
+
+.cart--item {
+    display: flex;
+    justify-content: space-between;
+}
