@@ -1,93 +1,71 @@
-import Homepage from "./components/homepage";
-import Navbar from "./components/navbar"
-import React, { useState } from "react";
-import scarviomarq from "./images/scarviomarq.jpg";
-import photonmarq from "./images/photonmarq.jpg";
-import mom from "./images/mom.jpg"
+import React from "react";
+import "./styles/homepage.css"
+import {ReactComponent as Left} from "./images/left.svg"
+import {ReactComponent as Right} from "./images/right.svg"
 
-function App() {
+function App (props) {
 
-  const [slideShow, setSlideShow] = useState({ isHover: false, count: 0, images:[
-    { src:scarviomarq, alt:"Scarlet and Violet Pokemon TCG", id:0 },{ src:photonmarq, alt:"Yugioh Photon Hypernova", id:1 },{ src:mom, alt:"MTG March of the Machines", id:2 }
-  ]})
+  const { upCount,
+          downCount,
+          handleMouseEnter, 
+          handleMouseLeave, 
+          clickIndex, 
+          count, 
+          images, 
+          isHover 
+        } = props
 
-  const upCount = () => {
-    if (slideShow.count === slideShow.images.length -1) {
-      setSlideShow(prevShow => {
-        return {
-          ...prevShow,
-          count: 0
-        }
-      })
-      return;
-    }
-    setSlideShow(prevShow => {
-      return {
-        ...prevShow,
-        count: slideShow.count + 1
-      }
-    })
+  console.log(images[count])
+
+  const arrowStyle = { 
+    width: "200px",
+    height:"200px", 
+    fill: isHover ? "#FEFFF1" : "darkgreen"
   }
-
-  const downCount = () => {
-    if (slideShow.count === 0) {
-      setSlideShow(prevShow => {
-        return {
-          ...prevShow,
-          count: slideShow.images.length-1
-        }
-      })
-      return;
-    }
-    setSlideShow(prevShow => {
-      return {
-        ...prevShow,
-        count: slideShow.count - 1
-      }
-    })
-  }
-
-  const handleMouseEnter = () => {
-    setSlideShow(prevShow => {
-      return {
-        ...prevShow,
-        isHover: true
-      }
-    })
-  }
-
-  const handleMouseLeave = () => {
-    setSlideShow(prevShow => {
-      return {
-        ...prevShow,
-        isHover: false
-      }
-    })
-  }
-
-  const clickIndex = (e) => {
-    const { id } = e.target
-    setSlideShow (prevShow => {
-      return {
-        ...prevShow,
-        count: parseInt(id)
-      }
-    })
-  }
+  
+  const slidesArray = images.map(slide => {
+    return <div 
+      className="slide" 
+      id={slide.id} 
+      key={slide.id} 
+      style={{
+        width: "50px",
+        height: "50px",
+        borderRadius: "50%",
+        backgroundColor: slide.id === count ? "#FEFFF1" : "darkgreen",
+        opacity: "0.6",
+      }} 
+      onClick={clickIndex}>
+    </div>
+ })
 
   return (
     <div>
-      <Navbar />
-      <Homepage 
-        slideShow={slideShow} 
-        upCount={upCount} 
-        downCount={downCount} 
-        handleMouseEnter={handleMouseEnter} 
-        handleMouseLeave={handleMouseLeave}
-        clickIndex={clickIndex}
-      />
+      <div className="marquis">
+        <h1 className="marquis--title">New to the Store</h1>
+        <div className="display--box">
+          <img className="display--actual" src={images[count].src} alt={images[count].alt}/>
+          <div className="arrows">
+            <Left 
+              onClick={downCount} 
+              onMouseEnter={handleMouseEnter} 
+              onMouseLeave={handleMouseLeave} 
+              className="left" alt="Left Arrow" 
+              style={arrowStyle}
+            />
+            <Right 
+              onClick={upCount} 
+              onMouseEnter={handleMouseEnter} 
+              onMouseLeave={handleMouseLeave} 
+              className="right" alt="Right Arrow" 
+              style={arrowStyle}
+            />
+          </div>
+          <div className="slides--indicator">{slidesArray}</div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
 export default App;

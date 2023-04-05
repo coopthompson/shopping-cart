@@ -1,5 +1,4 @@
 import "./styles/shopping.css";
-import Navbar from "./components/navbar";
 import Set from "./images/set.jpg";
 import Draft from "./images/draft.jpg";
 import Collector from "./images/collector.jpg";
@@ -136,7 +135,6 @@ const Shopping = () => {
 
   return (
     <div>
-      <Navbar itemList={itemList} />
       <div className="button--container">
         <button 
           onClick={routeChange} 
