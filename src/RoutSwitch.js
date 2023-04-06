@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Shopping from "./Shopping";
 import Cart from "./Cart";
 import Navbar from "./components/navbar";
 import scarviomarq from "./images/scarviomarq.jpg";
 import photonmarq from "./images/photonmarq.jpg";
-import mom from "./images/mom.jpg"
+import mom from "./images/mom.jpg";
 import Set from "./images/set.jpg";
 import Draft from "./images/draft.jpg";
 import Collector from "./images/collector.jpg";
@@ -96,7 +96,7 @@ const RouteSwitch = () => {
       ],
       inCart:[],
       totalItemsCart:0,
-      totalPrice:0
+      totalPrice:0,
     }
   )
   
@@ -260,25 +260,94 @@ const RouteSwitch = () => {
       return;
     }
   }
+ 
+  const addQuant = (e) => {
+    const item = e.target.parentNode.parentNode.parentNode
+    const index = parseInt(item.getAttribute("data-index"))
+    const priceTag = document.getElementById(`price${index}`).textContent
+    const priceArray = priceTag.match(/\d+/g)
+    const itemPrice = parseFloat(priceArray.join("."))
+    const itemIdentity = parseInt(item.getAttribute("data-id"))
+    const input = document.getElementById(`input${itemIdentity}`)
 
+    if (input.value === "") {
+      input.value = parseInt(input.placeholder) + 1
+    } else {
+      input.value = parseInt(input.value) + 1
+    }
 
-  const removeItem = () => {
-    console.log('test')
+    let newInCart = inCart.map((item) => {
+      if (itemIdentity === item.id) {
+          return {
+              ...item,
+              quantity: (item.quantity += 1)
+          };
+      }
+      return item
+    });
+    setShopData((prevShopData) => {
+      return {
+        ...prevShopData,
+        inCart:newInCart,
+        totalPrice: prevShopData.totalPrice + (itemPrice),
+        totalItemsCart: prevShopData.totalItemsCart + 1,
+        filled: true
+      }
+    })
   }
 
-  console.log(inCart)
-  console.log(totalPrice)
+  const removeQuant = (e) => {
+    const item = e.target.parentNode.parentNode.parentNode
+    const index = parseInt(item.getAttribute("data-index"))
+    const priceTag = document.getElementById(`price${index}`).textContent
+    const priceArray = priceTag.match(/\d+/g)
+    const itemPrice = parseFloat(priceArray.join("."))
+    const itemIdentity = parseInt(item.getAttribute("data-id"))
+    
+    const itemData = inCart[index]
+    const input = document.getElementById(`input${itemIdentity}`)
 
+    if (input.value === "") {
+      input.value = parseInt(input.placeholder) - 1
+    } else if (itemData.quantity === 0) {
+      return;
+    } else {
+      input.value = parseInt(input.value) - 1
+    }
+
+    let newInCart = inCart.map((item) => {
+      if (itemIdentity === item.id && item.quantity !== 0) {
+          return {
+              ...item,
+              quantity: (item.quantity -= 1),
+          };
+      }
+      return item
+    });
+    setShopData((prevShopData) => {
+        return {
+          ...prevShopData,
+          inCart:newInCart,
+          totalPrice: prevShopData.totalPrice - (itemPrice),
+          totalItemsCart: prevShopData.totalItemsCart - 1,
+          filled: totalItemsCart <= 1 ? false : true
+        }
+    })
+  }
+
+  const handleChange = () => {
+    console.log('test')
+
+  }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={
           <>
             <Navbar
               totalItemsCart={totalItemsCart}
               filled={filled}
-              checkCart={checkCart}
             />
             <App 
               images={images}
@@ -297,7 +366,6 @@ const RouteSwitch = () => {
             <Navbar
               totalItemsCart={totalItemsCart}
               filled={filled}
-              checkCart={checkCart}
             />
             <Shopping
               items={items}
@@ -313,18 +381,20 @@ const RouteSwitch = () => {
             <Navbar
               totalItemsCart={totalItemsCart} 
               filled={filled}
-              checkCart={checkCart}
             />
             <Cart
               inCart={inCart}
               totalItemsCart={totalItemsCart}
-              totalPrice={totalPrice}
-              removeItem={removeItem}
+              totalPrice={totalPrice.toFixed(2)}
+              removeQuant={removeQuant}
+              addQuant={addQuant}
+              handleChange={handleChange}
+              checkCart={checkCart}
             />
           </>
         }/>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
