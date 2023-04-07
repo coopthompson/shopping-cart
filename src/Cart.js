@@ -9,7 +9,9 @@ const Cart = (props) => {
           addQuant,
           handleChange,
           handleKeyPress,
-          removeItem
+          removeItem,
+          clearCart,
+          checkOut
         } = props
 
   const cartArray = inCart.map((item) => {
@@ -42,8 +44,8 @@ const Cart = (props) => {
       </div>
       <p className="cart--total">{`Total: $${totalPrice}`}</p>
       <div className="cart--buttons">
-        <button className="checkout">Checkout</button>
-        <button className="cart--clear">Clear Cart</button>
+        {totalItemsCart > 0 && <button className="checkout" onClick={checkOut}>Checkout</button>}
+        {totalItemsCart > 0 && <button className="cart--clear" onClick={clearCart}>Clear Cart</button>}
       </div>
     </div>
   )

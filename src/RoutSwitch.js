@@ -425,6 +425,23 @@ const RouteSwitch = () => {
     })
   }
 
+  const clearCart = () => {
+    setShopData((prevShopData) => {
+      return {
+        ...prevShopData,
+        inCart:[],
+        totalItemsCart:0,
+        totalPrice:0,
+        filled: false
+      }
+    })
+  }
+
+  const checkOut = () => {
+    alert(`Your total is $${totalPrice}`)
+
+  }
+
   return (
     <HashRouter>
       <Routes>
@@ -477,6 +494,8 @@ const RouteSwitch = () => {
               checkCart={checkCart}
               handleKeyPress={handleKeyPress}
               removeItem={removeItem}
+              clearCart={clearCart}
+              checkOut={checkOut}
             />
           </>
         }/>

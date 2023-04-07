@@ -105,3 +105,12 @@ textarea:focus, input:focus{
     justify-content: center;
     align-items: center;
 }
+
+.cart--clear, .checkout {
+    background-color: #fad000;
+    border-radius: 5px;
+    font-size: 25px;
+    width: 250px;
+    height: 40px;
+}
+    
