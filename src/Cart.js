@@ -8,11 +8,13 @@ const Cart = (props) => {
           removeQuant,
           addQuant,
           handleChange,
+          handleKeyPress,
+          removeItem
         } = props
 
   const cartArray = inCart.map((item) => {
     return <div className="cart--item" key={inCart.indexOf(item)} data-id={item.id} data-index={inCart.indexOf(item)}>
-             <button className={`remove${inCart.indexOf(item)}`}>X</button>
+             <button className={`remove${inCart.indexOf(item)} x--button`} onClick={removeItem}>X</button>
              <div className="item--represent">
                <p>{item.name}</p>
                <img className="cart--image" alt={item.name} src={item.src}/>
@@ -25,7 +27,7 @@ const Cart = (props) => {
                <label htmlFor="item">Quantity</label>
                <div className="quantity--control">
                  <button className="quantity--remove" onClick={removeQuant}>-</button>
-                 <input type="number" name="item" id={`input${item.id}`} className="item--quantity" placeholder={item.quantity} onChange={handleChange} />
+                 <input type="number" min="0" name="item" id={`input${item.id}`} className={`item--quantity index${inCart.indexOf(item)}`} placeholder={item.quantity} onChange={handleChange} onKeyDown={handleKeyPress} />
                  <button className="quantity--add" onClick={addQuant}>+</button>
                </div>
              </div>

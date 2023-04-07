@@ -15,7 +15,7 @@ textarea:focus, input:focus{
     padding: 20px;
 }
 
-.remove {
+.x--button {
     position: absolute;
     display: flex;
     justify-content: center;

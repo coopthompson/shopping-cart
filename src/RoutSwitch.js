@@ -303,20 +303,20 @@ const RouteSwitch = () => {
     const priceArray = priceTag.match(/\d+/g)
     const itemPrice = parseFloat(priceArray.join("."))
     const itemIdentity = parseInt(item.getAttribute("data-id"))
-    
     const itemData = inCart[index]
     const input = document.getElementById(`input${itemIdentity}`)
-
-    if (input.value === "") {
-      input.value = parseInt(input.placeholder) - 1
-    } else if (itemData.quantity === 0) {
+    
+    if (itemData.quantity <= 0) {
       return;
+    } else if (input.value === "") {
+      input.value = parseInt(input.placeholder) - 1
+      
     } else {
       input.value = parseInt(input.value) - 1
     }
 
     let newInCart = inCart.map((item) => {
-      if (itemIdentity === item.id && item.quantity !== 0) {
+      if (itemIdentity === item.id) {
           return {
               ...item,
               quantity: (item.quantity -= 1),
@@ -332,12 +332,97 @@ const RouteSwitch = () => {
           totalItemsCart: prevShopData.totalItemsCart - 1,
           filled: totalItemsCart <= 1 ? false : true
         }
+      })
+    }
+
+  const handleChange = (e) => {
+    const item = e.target.parentNode.parentNode.parentNode
+    const itemIdentity = parseInt(item.getAttribute("data-id"))
+    const input = document.getElementById(`input${itemIdentity}`)
+    
+
+    let newInCart = inCart.map((item) => {
+      if (itemIdentity === item.id && input.value !== "") {
+          return {
+              ...item,
+              quantity: input.value,
+          };
+      } else if (itemIdentity === item.id && input.value === "") {
+        return {
+          ...item,
+          quantity: 0
+        }
+      }
+      return item
+    })
+
+    let newTotalItemsArray = newInCart.map((item) => {
+      if (item.quantity === "") {
+        return 0
+      }
+      return parseInt(item.quantity)
+    })
+
+    let newTotalItems = newTotalItemsArray.reduce((partialSum, a) => partialSum + a, 0)
+
+    let priceForItems = newInCart.map((item) => {
+      return item.quantity * item.price
+    })
+
+    let priceForAll = priceForItems.reduce((partialSum, a) => partialSum + a, 0) 
+    
+    setShopData((prevShopData) => {
+      return {
+        ...prevShopData,
+        inCart:newInCart,
+        totalPrice: priceForAll,
+        totalItemsCart: newTotalItems,
+        filled: newTotalItems === 0 ? false : true
+      }
     })
   }
 
-  const handleChange = () => {
-    console.log('test')
+  const handleKeyPress = (e) => {
+    if (e.key === "-") {
+      e.preventDefault();
+      return;
+    } else if (e.key === ".") {
+      e.preventDefault();
+      return;
+    }
+  }
 
+  const removeItem = (e) => {
+    const desButton = e.target
+    const removeIndex = desButton.classList[0]
+    const justIndex = parseInt(removeIndex.match(/\d+/g)[0])
+    
+    let newInCart = inCart.filter((item) => inCart.indexOf(item) !== justIndex)
+
+    let newTotalItemsArray = newInCart.map((item) => {
+      if (item.quantity === "") {
+        return 0
+      }
+      return parseInt(item.quantity)
+    })
+
+    let newTotalItems = newTotalItemsArray.reduce((partialSum, a) => partialSum + a, 0)
+
+    let priceForItems = newInCart.map((item) => {
+      return item.quantity * item.price
+    })
+
+    let newPriceForAll = priceForItems.reduce((partialSum, a) => partialSum + a, 0) 
+
+    setShopData((prevShopData) => {
+      return {
+        ...prevShopData,
+        inCart:newInCart,
+        totalPrice:newPriceForAll,
+        totalItemsCart: newTotalItems,
+        filled: newTotalItems ===  0 ? false : true
+      }
+    })
   }
 
   return (
@@ -390,6 +475,8 @@ const RouteSwitch = () => {
               addQuant={addQuant}
               handleChange={handleChange}
               checkCart={checkCart}
+              handleKeyPress={handleKeyPress}
+              removeItem={removeItem}
             />
           </>
         }/>
